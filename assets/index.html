@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer List</title>
+    <!--script src="jquery.js"></script-->
+    
+    <style>
+       body {
+    font-family: Arial, sans-serif;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    font-size:12px;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('cover.png');
+    opacity: 0.85; /* Adjust this value for desired transparency */
+    
+}
+
+       
+       #customerList {
+    max-height: 530px;
+    overflow-y: scroll;
+    margin-top: 15px;
+    
+    
+}
+
+.customerItem {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    display: flex; /* Use flexbox for alignment */
+    justify-content: space-between; /* Align left and right sections */
+    /*background: url('./background.png') no-repeat center center;*/
+    background:#ffffff;
+    
+    background-size: cover;
+}
+
+.customerItem:hover {
+    background-color: #f1f1f1;
+}
+
+/* Left section for name, phone, and address */
+.left_align {
+    flex: 1; /* Take up remaining space */
+}
+
+/* Right section for customer ID and due */
+.right_align {
+    width: 40%; /* Fixed width for the right side */
+    text-align: right; /* Align content to the right */
+}
+
+
+
+.customerName {
+    font-size:14px;
+    font-weight: bold;
+    margin-bottom: 5px; /* Space between name and phone */
+}
+
+.cusdtls {
+    font-size: 12px;
+    margin-bottom: 5px; /* Space between phone and address */
+    opacity:0.7
+}
+
+.cusid {
+    font-size: 12px;
+    margin-top: 5px;
+    opacity: 0.7;
+}
+
+.customerDue {
+	font-size:14px;
+    color: red;
+    font-weight: bold;
+    margin-top: 5px; /* Space between due and ID */
+}
+
+
+
+
+       
+       
+   #partPaymentfield {
+    background-color: #f9f9f9;  /* Light background for the field */
+    padding: 20px;  /* Space around the content */
+    border-radius: 8px;  /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Subtle shadow effect */
+    max-width: 400px;  /* Set a maximum width for the field */
+    margin: 20px auto;  /* Center the field on the page */
+}
+
+#customerDetails label {
+    font-size: 16px;  /* Larger font size for label */
+    font-weight: bold;  /* Make label text bold */
+    margin-bottom: 8px;  /* Space between label and input */
+    display: block;  /* Ensure label takes up full width */
+}
+
+#customerDetails input[type="number"] {
+    width: 80%;  /* Make the input field take full width */
+    padding: 10px;  /* Add padding inside the input */
+    font-size: 16px;  /* Larger font size for input */
+    border: 1px solid #ccc;  /* Light border for input */
+    border-radius: 4px;  /* Rounded corners for input */
+    margin-bottom: 12px;  /* Space between input and next element */
+}
+
+#customerDetails input[type="number"]:focus {
+    outline: none;  /* Remove the default outline */
+    border-color: #4CAF50;  /* Change border color on focus */
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.2);  /* Subtle shadow effect on focus */
+}
+
+
+        
+  #newCustomerForm, #customerDetails {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        
+        #newCustomerForm {
+    width: 280px; /*400*/
+    padding: 12px; /*20*/
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 30px auto;
+}
+
+#newCustomerForm h2 {
+    text-align: center;
+    font-size: 20px;  /*24*/
+    margin-bottom: 20px;
+    color: #333;
+}
+
+#newCustomerForm label {
+    font-size: 16px;
+    color: #333;
+}
+
+#newCustomerForm input {
+    width: 100%;
+    padding: 6px;  /*10*/
+    margin-top: 5px;
+    font-size: 14px; /*16*/
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+#newCustomerForm input:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+#formButtons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px; /* Space between buttons */
+}
+
+#newCustomerForm button {
+    width: 48%;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+#newCustomerForm button:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+#newCustomerForm button:active {
+    transform: translateY(2px);
+}
+
+        
+        
+
+        
+        
+#buttonsContainer {
+    padding: 10px;/*It should be 20*/
+    text-align: center; /* Center the heading */
+}
+
+#buttonsContainer h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: white;
+}
+
+#actionButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px; /* Space between input and buttons */
+}
+
+#buttonsContainer input {
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    width: 180px;
+    transition: border-color 0.3s;
+}
+
+#buttonsContainer input:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+#buttonsContainer button {
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+#buttonsContainer button:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+#buttonsContainer button:active {
+    transform: translateY(2px);
+}
+
+        
+#customerDetails {
+    width: 280px;
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+}
+
+#customerDetails h1 {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+
+
+#customerButtons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px; /* Space between buttons */
+    margin-top: 20px;
+}
+
+#customerDetails button {
+    width: 30%;
+    padding: 10px 10px;
+    font-size: 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+#customerDetails button:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+#customerDetails button:active {
+    transform: translateY(2px);
+}
+
+       
+       
+#paymentTable {
+    width: 100%;  /* Makes the table full width */
+    border-collapse: collapse;  /* Removes space between table cells */
+    margin-top: 20px;
+    margin-bottom:30px;
+}
+
+
+
+#paymentTable img {
+    width: 30px; /* Adjust the width as needed */
+    height: 30px; /* Adjust the height as needed */
+    object-fit: cover; /* Ensures the image is not distorted */
+    margin-right: 15px; /* Adds some space between the image and text */
+}
+
+
+#paymentTable th, #paymentTable td {
+    padding: 10px;  /* Adds space inside the cells */
+    text-align: center;  /* Aligns text to the left */
+    border: 1px solid #ddd;  /* Light border around cells */
+}
+
+#paymentTable th {
+    background-color: #f4f4f4;  /* Light background for headers */
+    font-weight: bold;  /* Makes the header text bold */
+}
+
+#paymentTable tr:hover {
+    background-color: #f1f1f1;  /* Adds a hover effect for rows */
+}
+
+
+/* Default background content */
+.blur-background {
+    filter: blur(0);
+    pointer-events: auto; /* Allows interaction by default */
+    transition: filter 0.3s ease;
+}
+
+/* Sorting overlay container */
+.sorting-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it appears above other content */
+}
+
+/* Sorting menu styling */
+.sorting {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sorting div {
+    margin: 10px 0;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sorting div:hover {
+    background-color: #007BFF;
+    color: white;
+    border-radius: 5px;
+}
+
+/* Active state for background blur */
+.blur-active {
+    filter: blur(5px); /* Adds blur to the background */
+    pointer-events: none; /* Disables interaction */
+}
+
+.green{color:green;}
+   
+        
+.cus_table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* Ensures columns have fixed width */
+    margin: 0; /* Removes any default margins */
+    border:1px solid #f1e1e2;
+    border-radius:0 10px 0 0;
+}
+
+.cus_table tr {
+    display: flex;
+    justify-content: space-between; /* Pushes `left` and `right` to the edges */
+    align-items: stretch; /* Ensures both cells stretch evenly */
+}
+
+.cus_table tr td {
+    padding: 10px; /* Adds space inside the cells */
+    vertical-align: top;
+    overflow: hidden; /* Ensures content does not spill over */
+}
+
+.cus_table tr td.left {
+    width: 70%; /* Takes 70% of the row */
+    text-align: left; /* Align content to the left */
+    word-wrap: break-word; /* Breaks long words */
+    overflow-wrap: break-word; /* Ensures proper wrapping */
+    white-space: nowrap; /* Prevents wrapping */
+    text-overflow: ellipsis; /* Adds ellipsis for truncated content */
+}
+
+.cus_table tr td.right {
+    width: 30%; /* Takes 30% of the row */
+    background-color: #f1e1e24d;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cus_table tr td img{
+	width:60px;
+	height:66px;
+	border-radius:2px;
+	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Adds shadow */
+	
+}
+
+.cus_table tr td p {
+    font-size: 10px;
+    opacity: 0.7;
+    display: flex;
+    align-items: center;
+    gap: 7px; /* Adds a small gap between elements */
+    overflow: hidden; /* Hides overflow content */
+    text-overflow: ellipsis; /* Adds ellipsis for truncated content */
+}
+
+.cus_table tr td .name {
+    opacity: 1.0;
+    background-color: #11cf3f75;
+}
+
+.cus_table tr td .due {
+    opacity: 1.0;
+    background-color: #11cf3f75;
+}
+
+.cus_table tr td span {
+    margin-left: 20px;
+    font-size: 12px;
+    color: green;
+    border: 1px solid green;
+    padding: 0px 4px;
+    font-weight: bold;
+    cursor: pointer;
+    display: inline-block;
+}
+
+        
+        
+        
+        
+        
+    </style>
+    <script type="text/javascript">
+        // Initial JSON data
+      var customers = [{"name":"Bibhas Das","phone":"7384513355","address":"Muragachha, Nakashipara, Nadia,741154, WB-IND","due":"7000","payment":{"10/12/2002":"200"}}];
+
+
+
+
+	// This function will load data from Android app
+        function loadData() {
+            var data = Android.loadData();  // Get data from the Android app
+            //alert(data);
+            if (data) {
+                //document.getElementById("jsonData").innerHTML = data;
+                customers = JSON.parse(data);
+                //alert(customers);
+            }
+            displayCustomerList();  // Display the list after loading the data
+        }
+
+        // This function will update the data in the Android app
+        function saveData() {
+            var updatedText = JSON.stringify(customers);
+            Android.saveData(updatedText);
+        }
+
+
+/*
+	// This function will load data from Android app
+        function loadData() 
+	{
+	    //document.getElementById("jsonData").innerHTML = JSON.stringify(customers);
+            displayCustomerList();  // Display the list after loading the data
+        }
+
+        // This function will update the data in the Android app
+        function saveData() {}
+*/
+
+
+
+		function sortNameAsc()
+		{
+			customers.sort((a, b) => {
+				if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+				if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+				return 0; // If names are equal
+			});
+			hideSorting();
+			displayCustomerList();
+		}
+		
+		function sortNameDesc()
+		{
+			customers.sort((a, b) => {
+				if (a.name.toLowerCase() > b.name.toLowerCase()) return -1;
+				if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+				return 0; // If names are equal
+			});
+			hideSorting();
+			displayCustomerList();
+		}
+		
+		function sortMoneyAsc()
+		{
+			customers.sort((a, b) => {
+				if (a.due < b.due) return -1;
+				if (a.due < b.due) return 1;
+				return 0; // If names are equal
+			});
+			hideSorting();
+			displayCustomerList();
+		}
+		
+		function sortMoneyDesc()
+		{
+			customers.sort((a, b) => {
+				if (a.due > b.due) return -1;
+				if (a.due > b.due) return 1;
+				return 0; // If names are equal
+			});
+			hideSorting();
+			displayCustomerList();
+		}
+		
+		
+		
+		function sortLastPayment() 
+		{
+			customers.sort((a, b) => {
+				const aLastPayment = a.payment ? getLastPaymentDate(a.payment) : null;
+				const bLastPayment = b.payment ? getLastPaymentDate(b.payment) : null;
+
+				// If both have no payments, keep them in the same order
+				if (!aLastPayment && !bLastPayment) return 0;
+
+				// Customers with no payments come first
+				if (!aLastPayment) return -1;
+				if (!bLastPayment) return 1;
+
+				// Sort by last payment date in ascending order (older payments first)
+				return parseDate(aLastPayment) - parseDate(bLastPayment);
+			});
+
+			hideSorting();
+			displayCustomerList();
+		}
+
+	
+		
+		function sortRecentPayment() {
+			customers.sort((a, b) => {
+				const aLastPayment = a.payment ? getLastPaymentDate(a.payment) : null;
+				const bLastPayment = b.payment ? getLastPaymentDate(b.payment) : null;
+
+				// If both have no payments, keep them in the same order
+				if (!aLastPayment && !bLastPayment) return 0;
+
+				// Customers with no payments come last
+				if (!aLastPayment) return 1;
+				if (!bLastPayment) return -1;
+
+				// Sort by last payment date in descending order (recent payments first)
+				return parseDate(bLastPayment) - parseDate(aLastPayment);
+			});
+
+			hideSorting();
+			displayCustomerList();
+		}
+
+
+
+		// Helper function to get the most recent payment date from the payment object
+		function getLastPaymentDate(paymentObj) {
+			const dates = Object.keys(paymentObj);
+			if (dates.length === 0) return null;
+			return dates.reduce((latest, current) => {
+				return parseDate(current) > parseDate(latest) ? current : latest;
+			});
+		}
+
+		// Helper function to parse dd/mm/yyyy into a Date object
+		function parseDate(dateString) {
+			const [day, month, year] = dateString.split("/").map(Number);
+			return new Date(year, month - 1, day); // Month is zero-based in JavaScript Date
+		}
+
+
+
+
+
+
+
+
+        // Function to display the customer list
+        function displayCustomerList() {
+            var listContainer = document.getElementById("customerList");
+            listContainer.innerHTML = ""; // Clear the list
+
+            // Loop through the customers and create list items
+            customers.forEach(function(customer, index) {
+                var customerDiv = document.createElement("div");
+                customerDiv.className = "customerItem";
+                customerDiv.id = "customer-" + index; // Set unique ID for each customer
+                
+                
+                var _html = `
+                	<div class='left_align'>
+                		<div class="customerName">${customer.name}</div>
+                    	<div class='cusdtls' >${customer.phone|| ""}</div>
+                    	<div class='cusdtls'>${customer.address|| ""}</div>
+                    	</div>
+                    <div class='right_align'>
+                    	<div class='cusid'>C.ID: ${customer.id}</div>
+                    	<div class="customerDue `;
+                    
+                    if(customer.due == '0') _html = _html + 'green';
+                    	
+                    _html = _html + `">Due: ${customer.due} ₹</div>
+                    <div>
+                `;
+				
+				customerDiv.innerHTML = _html;
+				
+                customerDiv.onclick = function() {
+                    viewCustomerDetails(index);
+                };
+
+                listContainer.appendChild(customerDiv);
+            });
+        }
+
+        // Function to view customer details on the same page
+        function viewCustomerDetails(index) 
+        {
+            var customer = customers[index];
+
+            // Show customer details section
+            var detailsContainer = document.getElementById("customerDetails");
+            
+            
+            
+            var _html = `
+            
+            <h1>Customer Details</h1>
+            
+            <table class='cus_table'>
+		        <tr>
+		        	<td class='left'>
+				        <p><strong>C.ID:</strong> ${customer.id}</p>
+				        <p onclick="alert('${customer.name}')" class = 'name' ><strong>Name:</strong> ${customer.name}</p>
+				        <p onclick="alert('${customer.phone}')" ><strong>Phone:</strong> ${customer.phone}</p>
+				        <p onclick="alert('${customer.address}')" ><strong>Address:</strong> ${customer.address}</p>
+				        <p class='due'><strong>Due:</strong> ${customer.due} ₹ <span id='addDueBtn' onclick='addMoreDue(${index})'>+</span></p>
+				        <!--p><strong>Payments:</strong></p-->
+		       		</td>
+		       	
+		       
+		       		<td class='right'>
+		       			<img src='https://i.pinimg.com/736x/24/84/70/248470199d7901dd9f5adbed7a6a3932.jpg'>
+		       		</td>
+		       	</tr>
+           </table>
+                
+               
+                
+                <table id="paymentTable">
+               `;
+              
+              if(JSON.stringify(customer.payment)!='{}' && customer.payment)
+              {
+					_html = _html + `	<thead>
+		    			
+		    			<tr><th colspan = '3' > Payments History</th> </tr>
+		    			<tr>
+		        			<th>Date</th>
+		        			<th>Payment</th>
+		        			<th>Action</th>
+		    			</tr>
+					</thead>`;
+			  }
+					
+				_html = _html + `	<tbody>
+		    				<!-- Dynamic rows will be added here by JavaScript -->
+		    			${Object.keys(customer.payment || {}).map(function(date) {
+		        		return `<tr>
+		                		    <td>${date}</td>
+		               		        <td>${customer.payment[date]} ₹</td>
+		                    		<td><span class="crossButton" onclick="deletePayment(${index}, '${date}')"><img src='delete.png'></span></td>
+		                		</tr>`;
+		    			}).join('')}
+					</tbody>
+				</table>
+        
+                <div id="cd_buttons">
+                <button  onclick="goBackToList()">Back</button>
+                <button  onclick="deleteCustomer(${index})">Delete</button>
+                <button  onclick="showUpdateForm(${index})">Payment</button>
+            	</div>
+            `;
+
+			detailsContainer.innerHTML = _html;
+
+            // Hide the customer list and show the details
+            document.getElementById("customerList").style.display = "none";
+            document.getElementById("buttonsContainer").style.display = "none";
+            detailsContainer.style.display = "block";
+        }
+
+		
+		function addMoreDue(index)
+		{
+			document.getElementById("cd_buttons").style.display="none";
+			document.getElementById("addDueBtn").style.display="none";
+			
+			
+			var updateDue = document.createElement('div');
+            updateDue.innerHTML = `
+            	<div id="updateDue">
+                <label for="updateDueVal">Enter new Due * :</label><br>
+                <input type="number" id="updateDueVal"><br><br>
+                <button onclick="addDue(${index})">Confirm</button>
+                <button onclick="hideAddDue()">Cancel</button>
+                </div>
+            `;
+                 
+            document.getElementById("customerDetails").appendChild(updateDue);
+			
+		}
+		
+		function addDue(index)
+		{
+        	if(confirm("Please confirm for update Due ?"))
+        	{
+            	var amount = parseFloat(document.getElementById("updateDueVal").value);
+            	
+            	if (isNaN(amount) || amount <= 0)
+                {
+                	alert("Please enter a valid payment amount.");
+                	return;
+                }
+
+		        var customer = customers[index];
+		        
+		        
+		        
+		        if(confirm("The new Due will be : "+ parseInt(amount+customer.due)))
+		        {
+		        	customer.due = parseInt(amount+customer.due);
+
+					alert("Customer's Due is updated successfully");
+					
+				    saveData();  // Update the database
+				    hideAddDue();
+				    viewCustomerDetails(index);
+				}
+		        
+        	}
+        
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+		function hideAddDue()
+		{
+			document.getElementById("updateDue").remove();
+			document.getElementById("cd_buttons").style.display = "block";
+			document.getElementById("addDueBtn").style.display = "block";
+			
+		}
+
+
+        // Function to go back to the main list
+        function goBackToList() {
+            document.getElementById("customerList").style.display = "block";
+            document.getElementById("buttonsContainer").style.display = "block";
+            document.getElementById("customerDetails").style.display = "none";
+            displayCustomerList();
+        }
+
+        // Function to delete a customer
+        function deleteCustomer(index) {
+        	if(confirm("Are you confirm to remove?"))
+        	{
+            customers.splice(index, 1);  // Remove customer from the list
+            saveData();  // Update the database
+            goBackToList();  // Go back to the customer list
+            }
+        }
+
+        // Function to show the update payment form
+        function showUpdateForm(index) {
+            var customer = customers[index];
+            var updateForm = document.createElement('div');
+            updateForm.innerHTML = `
+            	<div id="partPaymentfield">
+                <label for="paymentAmount">Enter Payment Amount* :</label><br>
+                <input type="number" id="paymentAmount"><br><br>
+                <button onclick="addPayment(${index})">Confirm</button>
+                <button onclick="hidePartPayment()">Cancel</button>
+                </div>
+            `;
+            
+            document.getElementById("cd_buttons").style.display = "none";
+            document.getElementById("addDueBtn").style.display = "none";
+            
+            document.getElementById("customerDetails").appendChild(updateForm);
+        }
+
+		function hidePartPayment()
+		{
+			document.getElementById("partPaymentfield").remove();
+			document.getElementById("cd_buttons").style.display = "block";
+			document.getElementById("addDueBtn").style.display = "block";
+			
+		}
+	
+        // Function to add a part payment
+        function addPayment(index) 
+        {
+        	if(confirm("Please confirm for partpayment"))
+        	{
+            	var amount = parseFloat(document.getElementById("paymentAmount").value);
+            	if (isNaN(amount) || amount <= 0)
+                {
+                	alert("Please enter a valid payment amount.");
+                	return;
+                }
+
+		        var customer = customers[index];
+		        
+		        
+		        
+		        //var date = new Date().toLocaleDateString(); // Get the current date
+		        if (!customer.payment) customer.payment = {}; // Initialize payments if undefined
+		        //customer.payment[date] = amount; // Add the payment entry
+				
+				
+				
+				var now = new Date();
+				var date = String(now.getDate()).padStart(2, '0') + '/' +
+						   String(now.getMonth() + 1).padStart(2, '0') + '/' +
+						   String(now.getFullYear()).slice(-2);
+
+				var hours = now.getHours();
+				var minutes = String(now.getMinutes()).padStart(2, '0');
+				var period = hours >= 12 ? 'PM' : 'AM';
+				hours = hours % 12 || 12; // Convert to 12-hour format
+
+				var time = hours + ':' + minutes + ' ' + period;
+
+				var dateTime = date + ', ' + time;
+
+				if (!customer.payment) customer.payment = {};
+				customer.payment[dateTime] = amount;
+
+				//console.log(dateTime); // Example: "28/12/24, 3:45 PM"
+
+				
+				
+				
+				
+				
+		        customer.due -= amount; // Update due amount
+				
+				alert("Customer's part payment is registered successfully");
+				
+		        saveData();  // Update the database
+		        hidePartPayment();
+		        viewCustomerDetails(index);
+		        
+        	}
+        
+        }
+
+        // Function to delete a part payment entry
+        function deletePayment(customerIndex, paymentDate) 
+        {
+		    if(confirm("Please confirm to delete this entry"))
+		    {
+		        var customer = customers[customerIndex];
+		        
+		        
+		        balAmt = customers[customerIndex].payment[paymentDate];
+		        
+		        
+		        delete customer.payment[paymentDate]; // Remove the payment entry
+		        
+		       
+		        customers[customerIndex].due = customers[customerIndex].due + balAmt;
+		        
+		        
+		        saveData();  // Update the database
+		        viewCustomerDetails(customerIndex);  // Refresh the details page
+		    }
+        }
+
+
+
+        
+// Function to search customers by name or phone number
+function searchCustomers() {
+    var query = document.getElementById("searchQuery").value.toLowerCase();
+
+    // Determine if the query is a phone number (contains digits)
+    var isPhoneNumber = /\d/.test(query);
+
+    var filteredCustomers = customers.filter(function(customer) {
+        if (isPhoneNumber) {
+            // Search by phone number (ensure customer has a phone field)
+            return customer.phone && customer.phone.includes(query);
+        } else {
+            // Search by name
+            return customer.name.toLowerCase().includes(query);
+        }
+    });
+
+    // Display filtered customers
+    var listContainer = document.getElementById("customerList");
+    listContainer.innerHTML = ""; // Clear the list
+
+    filteredCustomers.forEach(function(customer) {
+        var originalIndex = customers.indexOf(customer); // Find the index of the customer in the original list
+
+        var customerDiv = document.createElement("div");
+        customerDiv.className = "customerItem";
+        customerDiv.id = "customer-" + originalIndex;
+
+        
+        
+        
+        var _html = `
+                	<div class='left_align'>
+                		<div class="customerName">${customer.name}</div>
+                    	<div class='cusdtls' >${customer.phone || ""}</div>
+                    	<div class='cusdtls'>${customer.address || ""}</div>
+                    	</div>
+                    <div class='right_align'>
+                    	<div class='cusid'>C.ID: ${customer.id}</div>
+                    	<div class="customerDue `;
+                    
+                    if(customer.due == '0') _html = _html + 'green';
+                    	
+                    _html = _html + `">Due: ${customer.due} ₹</div>
+                    <div>
+                `;
+				
+		customerDiv.innerHTML = _html;
+
+        customerDiv.onclick = function() {
+            viewCustomerDetails(originalIndex);
+        };
+
+        listContainer.appendChild(customerDiv);
+    });
+}
+
+
+        
+        
+        
+        
+        
+        
+        function showNewCustomerForm()
+        {		
+        		document.getElementById("customerList").style.display = "none";
+		        document.getElementById("buttonsContainer").style.display = "none";
+		        document.getElementById("newCustomerForm").style.display = "block";
+		}
+        
+        function backToList()
+        {
+        		document.getElementById("customerList").style.display = "block";
+		        document.getElementById("buttonsContainer").style.display = "block";
+		        document.getElementById("newCustomerForm").style.display = "none";
+		        displayCustomerList();
+		}
+
+
+
+
+
+		// Function to generate a random 8-digit number
+		function generateUniqueId() {
+			let uniqueId;
+			do {
+				uniqueId = Math.floor(10000000 + Math.random() * 90000000); // Random 8-digit number
+			} while (isIdExists(uniqueId)); // Check if the ID already exists
+			return uniqueId;
+		}
+
+		// Function to check if the ID exists in the customer list
+		function isIdExists(id) {
+			return customers.some(customer => customer.id === id.toString());
+		}
+		
+					
+		
+        function addCustomer()
+        {
+        	var name = document.getElementById("newName").value.trim();
+            var phone = document.getElementById("newPhone").value.trim();
+            var address = document.getElementById("newAddress").value.trim();
+            var due = parseFloat(document.getElementById("newDue").value);
+
+            if (!name) {
+                alert("Name is required.");
+                return;
+            }
+
+            if (isNaN(due) || due < 0) {
+                alert("Please enter a valid due amount.");
+                return;
+            }
+			
+			if(phone)
+			{
+				if(phone.length!=10){
+				alert("Phone number should be 10 digits");
+				return;}
+				else
+				{
+					phone="+91 "+phone;
+				}
+			}
+			
+            
+            var duplicate = customers.some(function(customer) {
+				if (customer.name.toLowerCase() === name.toLowerCase()) {
+					// Check if the address is also the same
+					return customer.address.toLowerCase() === address.toLowerCase();
+				}
+				return false; // Name and address do not match
+			});
+
+            if (duplicate) {
+                alert("A customer is already exists.");
+                return;
+            }
+
+
+			// Example usage
+			var newId = generateUniqueId();
+
+
+
+            var newCustomer = {
+                id: newId,
+                name: name,
+                phone: phone,
+                address: address,
+                due: due
+            };
+
+            customers.push(newCustomer);
+            
+            saveData();  // Update the database
+            
+            document.getElementById("newName").value="";
+            document.getElementById("newPhone").value="";
+            document.getElementById("newAddress").value="";
+            document.getElementById("newDue").value="";
+            alert("Customer name : "+ name+" is registered successfully");
+        }
+        
+        
+        
+        // Show the sorting overlay and blur the background
+function showSorting() {
+    document.querySelector('.sorting-overlay').style.display = 'flex';
+    document.querySelector('.blur-background').classList.add('blur-active');
+}
+
+// Hide the sorting overlay and restore the background
+function hideSorting() {
+    document.querySelector('.sorting-overlay').style.display = 'none';
+    document.querySelector('.blur-background').classList.remove('blur-active');
+}
+
+
+    </script>
+</head>
+<body onload="loadData()">
+
+<div class="blur-background">
+    <!-- All other content -->
+    <!--div id='jsonData'></div-->
+
+    <div id="buttonsContainer">
+        <!--h1>Customer List</h1-->
+        <h1></h1>
+        <input type="text" id="searchQuery" placeholder="Search by name" oninput="searchCustomers()">
+        <button onclick="showNewCustomerForm()">+</button>
+        <button onclick="showSorting()">Sort</button>
+        
+        
+    </div>
+
+    <div id="customerList">
+        <!-- Customer list will appear here -->
+    </div>
+
+    <div id="newCustomerForm">
+        <h2>Add New Customer</h2>
+        <label for="newName">Name (required):</label><br>
+        <input type="text" id="newName"><br><br>
+        <label for="newPhone">Phone:</label><br>
+        <input type="text" id="newPhone"><br><br>
+        <label for="newAddress">Address:</label><br>
+        <input type="text" id="newAddress"><br><br>
+        <label for="newDue">Due (required):</label><br>
+        <input type="number" id="newDue"><br><br>
+        <button onclick="addCustomer()">Add</button>
+        <button onclick="backToList()">Back</button>
+    </div>
+
+    <div id="customerDetails">
+        <!-- Customer details will appear here -->
+    </div>
+</div>
+
+
+<div class="sorting-overlay">
+    <div class="sorting">
+        <div onclick="sortNameAsc()">By name Assending</div>
+        <div onclick="sortNameDesc()">By name Dessending</div>
+        <div onclick="sortMoneyAsc()" >By Money Assending</div>
+        <div onclick="sortMoneyDesc()" >By Money Dessending</div>
+        <div onclick=sortLastPayment()>By last payment</div>
+        <div onclick=sortRecentPayment()>By resent payment</div>
+    </div>
+</div>
+
+</body>
+</html>
